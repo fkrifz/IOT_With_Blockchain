@@ -1,0 +1,21 @@
+name: fablo-test-network-org1
+description: Connection profile for Org1 in Fablo network
+version: 1.0.0
+client:
+  organization: Org1
+organizations:
+  Org1:
+    mspid: Org1MSP
+    peers:
+      - peer0.org1.ac.id
+    certificateAuthorities:
+      - ca.org1.ac.id
+peers:
+  peer0.org1.ac.id:
+    url: grpc://localhost:7041
+certificateAuthorities:
+  ca.org1.ac.id:
+    url: http://localhost:7040
+    caName: ca.org1.ac.id
+    httpOptions:
+      verify: false

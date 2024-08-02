@@ -1,0 +1,49 @@
+@layout('layouts/admin')
+
+@section('content')
+
+<div class="container pt-4 sm:pt-8">
+  <div class="text-sm breadcrumbs mb-3">
+    <ul>
+      <li><a>Admin</a></li>
+      <li><a>Devices</a></li>
+      <li>Create</li>
+    </ul>
+  </div>
+  <div class="text-start pb-4">
+    <h1 class="text-2xl font-bold text-black">Tambah Perangkat</h1>
+  </div>
+  <div class="text-start pb-4">
+    <a href="/admin" class="btn btn-sm btn-primary text-white">Kembali</a>
+  </div>
+  <div class="bg-base-200 rounded-lg shadow-lg p-4 sm:p-6 lg:p-8">
+    @if(flashMessages.has('error'))
+    <div class="alert alert-error shadow-xl mb-3">{{ flashMessages.get('error') }}</div>
+    @endif
+    @if(flashMessages.has('success'))
+    <div class="alert alert-success shadow-xl mb-3">{{ flashMessages.get('success') }}</div>
+    @endif
+  <form action="{{ route('post.tambah.perangkat')}}" method="POST">
+    <div class="grid grid-cols-2 gap-4">
+      <div class="form-control w-full col-span-3">
+        <label class="label">
+          <span class="label-text">Nama Perangkat</span>
+        </label>
+        <input type="text" name="nama_perangkat" placeholder="Type here" class="input input-bordered w-full" required />
+      </div>
+      <div class="form-control w-full mb-6 col-span-3">
+        <label class="label">
+          <span class="label-text">Lokasi?</span>
+        </label>
+        <textarea type="text" name="lokasi_perangkat" class="textarea textarea-bordered w-full h-24" required > </textarea>
+      </div>
+    </div>
+    <div class="text-end col-span-2">
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+        Save
+      </button>
+    </div>
+  </form>
+  </div>
+</div>
+@end

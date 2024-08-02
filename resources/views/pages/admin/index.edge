@@ -1,0 +1,44 @@
+@layout('layouts/admin')
+
+@section('content')
+
+<div class="container pt-4 sm:pt-8">
+  <div class="text-sm breadcrumbs">
+    <ul>
+      <li><a>Admin</a></li>
+      <li><a>Devices</a></li>
+    </ul>
+  </div>
+  <div class="text-start pb-4">
+    <h1 class="text-2xl font-bold text-black">Manajemen Perangkat</h1>
+  </div>
+  <div class="text-end pb-4">
+
+    <a href="{{ route('admin.device.create') }}" class="btn btn-sm btn-primary text-white">Tambah Devices</a>
+  </div>
+  <div class="bg-base-100 rounded-xl light shadow-lg p-4">
+    <div class="overflow-x-auto">
+      <table id="example" class="table" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Devices</th>
+                <th>Lokasi</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+          @each(item in data)
+            <tr>
+              <td>{{ item.id }}</td>
+              <td>{{ item.nama_perangkat }}</td>
+              <td>{{ item.lokasi_perangkat }}</td>
+              <td><a href="/admin/device/edit/{{ item.id }}" class="btn btn-primary btn-sm text-white">Edit</a></td>
+            </tr>
+          @end
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+@end

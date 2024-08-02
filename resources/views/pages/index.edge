@@ -1,0 +1,81 @@
+@layout('layouts/app')
+
+@set('title','Monitoring Kualitas Udara')
+
+@section('custom-css')
+<style>
+  /* Add your custom CSS here */
+</style>
+@end
+
+@section('content')
+<section class="p-6 mt-4 mb-auto">
+  <div class="max-w-md bg-white p-8 mx-auto rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Air Quality Monitoring</h1>
+    
+    <div id="sensor-data" class="mb-4">Loading...</div>
+  </div>
+</section>
+
+
+</section>
+@end
+
+@section('custom-js')
+<script>
+async function fetchData() {
+  const url = 'http://localhost:3000/evaluate/storage-channel/storage-chaincode/GetDataForLast10Seconds';
+  const apiKey = 'Org1';
+
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'X-API-Key': apiKey
+      }
+    });
+
+    const data = await response.json();
+
+    // Check if the data array is not empty before accessing the last element
+    if (data.length > 0) {
+      const latestSensorData = data[data.length - 1];
+
+      const sensorDataElement = document.getElementById('sensor-data');
+
+      // Check PPM MQ 135 threshold
+      const ppmMQ135Threshold = 400.0; // Change this to your desired threshold for PPM MQ 135
+      const ppmMQ135Color = latestSensorData.ppm_mq_135 > ppmMQ135Threshold ? 'text-red-500' : 'text-green-500';
+
+      // Check PPM MQ 7 threshold
+      const ppmMQ7Threshold = 25.0; // Change this to your desired threshold for PPM MQ 7
+      const ppmMQ7Color = latestSensorData.ppm_mq_7 > ppmMQ7Threshold ? 'text-red-500' : 'text-green-500';
+
+      sensorDataElement.innerHTML = `
+        <div class="bg-gray-200 p-4 rounded-md mb-4">
+          <p>Device ID: ${latestSensorData.id_perangkat}</p>
+          <p class="${ppmMQ135Color}">CO2: ${latestSensorData.ppm_mq_135} (${ppmMQ135Color === 'text-red-500' ? 'High' : 'Normal'})</p>
+          <p class="${ppmMQ7Color}">CO: ${latestSensorData.ppm_mq_7} (${ppmMQ7Color === 'text-red-500' ? 'High' : 'Normal'})</p>
+        </div>
+      `;
+    } else {
+      const sensorDataElement = document.getElementById('sensor-data');
+      sensorDataElement.innerHTML = '<p class="text-gray-500">No data available</p>';
+    }
+  } catch (error) {
+    console.error('Error:', error);
+
+    const sensorDataElement = document.getElementById('sensor-data');
+    sensorDataElement.innerHTML = '<p class="text-red-500">Error fetching data</p>';
+  }
+}
+
+// Fetch data initially
+fetchData();
+
+// Fetch data every 10 seconds (adjust the interval as needed)
+setInterval(fetchData, 1000);
+</script>
+
+
+@end

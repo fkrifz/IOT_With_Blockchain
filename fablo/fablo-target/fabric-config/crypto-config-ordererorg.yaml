@@ -1,0 +1,9 @@
+PeerOrgs:
+  - Name: OrdererOrg
+    Domain: orderer.ac.id
+    Specs:
+      - Hostname: orderer0.orderer
+    Template:
+      Count: 0
+    Users:
+      Count: 1

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://github.com/fakhrads/fablo/releases/download/1.1.2/schema.json",
+  "global": {
+    "fabricVersion": "2.5.3",
+    "tls": false,
+    "peerDevMode": false,
+    "tools": {
+      "explorer": true
+    }
+  },
+  "orgs": [
+    {
+      "organization": {
+        "name": "OrdererOrg",
+        "domain": "orderer.ac.id"
+      },
+      "orderers": [{
+        "groupName": "orderer",
+        "type": "solo",
+        "instances": 1
+      }]
+    },
+    {
+      "organization": {
+        "name": "Org1",
+        "domain": "org1.ac.id"
+      },
+      "peer": {
+        "instances": 1,
+        "db": "CouchDb"
+      }
+    }
+  ],
+  "channels": [
+    {
+      "name": "storage-channel",
+      "orgs": [
+        {
+          "name": "Org1",
+          "peers": [
+            "peer0"
+          ]
+        }
+      ]
+    }
+  ],
+  "chaincodes": [
+    {
+      "name": "storage-chaincode",
+      "version": "1.0.0",
+      "lang": "node",
+      "channel": "storage-channel",
+      "directory": "./chaincodes/storage-chaincode"
+    }
+  ]
+}
